@@ -96,7 +96,7 @@ ${text}`;
       const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
         method: 'POST',
         headers: {
-          'Authorization': 'Bearer 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',
+          'Authorization': 'Bearer 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',
           'Content-Type': 'application/json',
           'HTTP-Referer': window.location.href, // Yêu cầu bắt buộc của OpenRouter free
           'X-Title': 'Vanguard Wealth Landing Page' 
