@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Plus_Jakarta_Sans, Manrope } from "next/font/google";
 import "./globals.css";
+import Chatbot from "@/components/Chatbot";
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   variable: "--font-headline",
@@ -36,6 +37,7 @@ export default function RootLayout({
         className={`${plusJakartaSans.variable} ${manrope.variable} ${manropeLabel.variable} antialiased selection:bg-primary-container selection:text-on-primary-container font-body`}
       >
         {children}
+        <Chatbot />
       </body>
     </html>
   );
