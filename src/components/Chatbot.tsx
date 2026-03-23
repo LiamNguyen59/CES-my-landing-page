@@ -149,7 +149,7 @@ ${text}`;
       {!isOpen && (
         <button 
           onClick={() => setIsOpen(true)}
-          className="fixed bottom-6 right-6 w-14 h-14 bg-[#2563eb] hover:bg-[#1d4ed8] text-white rounded-full flex items-center justify-center shadow-2xl transition-transform hover:scale-105 z-50 chatbot-glass"
+          className="fixed bottom-6 right-6 w-14 h-14 bg-[#2563eb] hover:bg-[#1d4ed8] text-white rounded-full flex items-center justify-center shadow-2xl transition-transform hover:scale-105 z-50 cyber-glass"
         >
           <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
@@ -159,49 +159,52 @@ ${text}`;
 
       {/* Chat Window Glassmorphism Layout */}
       {isOpen && (
-        <div className="fixed bottom-6 right-6 w-[360px] max-w-[calc(100vw-2rem)] h-[520px] max-h-[calc(100vh-2rem)] flex flex-col rounded-2xl shadow-2xl overflow-hidden z-50 chatbot-glass transition-all duration-300 ease-in-out">
+        <div className="fixed bottom-6 right-6 w-[360px] max-w-[calc(100vw-2rem)] h-[560px] max-h-[calc(100vh-2rem)] flex flex-col rounded-2xl overflow-hidden z-50 cyber-glass transition-all duration-300 ease-in-out">
           
           {/* Header */}
-          <div className="px-4 py-3 bg-[#2563eb] opacity-95 text-white flex items-center justify-between border-b border-[#1d4ed8]">
-            <div className="flex items-center gap-2">
-              <div className="relative flex h-3 w-3">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
-              </div>
-              <span className="font-semibold tracking-wide text-[15px]">Vanguard Expert</span>
-            </div>
+          <div className="px-5 py-4 border-b border-white/10 flex items-center justify-between text-white">
             <div className="flex items-center gap-3">
-              <button 
-                onClick={handleRefresh}
-                title="Làm mới cuộc hội thoại"
-                className="hover:text-blue-200 transition-colors"
-                disabled={isRefreshing}
-              >
-                <svg className={`w-4 h-4 ${isRefreshing ? 'animate-spin' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+              <div className="w-10 h-10 bg-[#3b82f6]/20 rounded-full flex items-center justify-center border border-[#3b82f6]/30 shadow-inner">
+                <svg className="w-5 h-5 text-blue-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 0 1 7 7h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1H2a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h1a7 7 0 0 1 7-7h1V5.73c-.6-.34-1-.99-1-1.73a2 2 0 0 1 2-2z"/><path d="M9 14h.01"/><path d="M15 14h.01"/>
                 </svg>
+              </div>
+              <div>
+                <h3 className="font-bold tracking-wide text-[16px] leading-tight text-white/95">Ai Assistant</h3>
+                <div className="flex items-center gap-1.5 mt-0.5">
+                  <span className="relative flex h-2.5 w-2.5">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500 border border-black/20"></span>
+                  </span>
+                  <span className="text-[10px] text-green-400 font-bold tracking-widest uppercase">Online</span>
+                </div>
+              </div>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <button onClick={handleRefresh} disabled={isRefreshing} className="p-2 hover:bg-white/10 rounded-full transition-colors text-gray-300 hover:text-white">
+                <svg className={`w-5 h-5 ${isRefreshing ? 'animate-spin' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
               </button>
-              <button 
-                onClick={() => setIsOpen(false)}
-                title="Đóng chat"
-                className="hover:text-blue-200 transition-colors"
-              >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
+              <button onClick={() => setIsOpen(false)} className="p-2 hover:bg-white/10 rounded-full transition-colors text-gray-300 hover:text-white">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
               </button>
             </div>
           </div>
 
-          {/* Messages Area - Background transparent for glass effect overlay */}
-          <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50/60 pb-8">
+          {/* Messages Area */}
+          <div className="flex-1 overflow-y-auto p-4 space-y-5 pb-8 scroll-smooth" id="chat-messages-container">
             {messages.map((msg, index) => (
-              <div key={index} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+              <div key={index} className={`flex items-end gap-2.5 ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                {msg.role === 'assistant' && (
+                  <div className="w-8 h-8 rounded-full bg-[#3b82f6]/20 border border-[#3b82f6]/30 flex items-center justify-center shrink-0 mb-1 shadow-sm">
+                    <svg className="w-4 h-4 text-blue-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 0 1 7 7h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1H2a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h1a7 7 0 0 1 7-7h1V5.73c-.6-.34-1-.99-1-1.73a2 2 0 0 1 2-2z"/><path d="M9 14h.01"/><path d="M15 14h.01"/></svg>
+                  </div>
+                )}
+                
                 <div 
-                  className={`max-w-[85%] rounded-[1.2rem] px-4 py-2 text-[14.5px] ${
+                  className={`max-w-[76%] rounded-[1.25rem] px-4 py-3 text-[14.5px] shadow-sm ${
                     msg.role === 'user' 
-                      ? 'bg-[#2563eb] text-white rounded-br-none shadow-md' 
-                      : 'bg-white text-gray-800 border border-gray-100 rounded-bl-none shadow-sm chat-markdown'
+                      ? 'cyber-bubble-user text-white rounded-br-sm' 
+                      : 'cyber-bubble-ai text-gray-100/90 rounded-bl-sm chat-markdown'
                   }`}
                   dangerouslySetInnerHTML={
                     msg.role === 'assistant' 
@@ -211,14 +214,22 @@ ${text}`;
                 >
                   {msg.role === 'user' ? msg.content : undefined}
                 </div>
+                
+                {msg.role === 'user' && (
+                  <div className="w-8 h-8 rounded-full bg-purple-600/20 border border-purple-500/30 flex items-center justify-center shrink-0 mb-1 shadow-sm">
+                    <svg className="w-4 h-4 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
+                  </div>
+                )}
               </div>
             ))}
             
             {/* Typing Indicator */}
             {isTyping && (
-               <div className="flex justify-start">
-                 <div className="max-w-[85%] rounded-[1.2rem] rounded-bl-none px-4 py-2.5 bg-white border border-gray-100 shadow-sm text-gray-500 text-xs flex items-center gap-1.5">
-                   Đang nhập 
+               <div className="flex items-end gap-2.5 justify-start">
+                 <div className="w-8 h-8 rounded-full bg-[#3b82f6]/20 border border-[#3b82f6]/30 flex items-center justify-center shrink-0 mb-1 shadow-sm">
+                   <svg className="w-4 h-4 text-blue-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 0 1 7 7h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1H2a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h1a7 7 0 0 1 7-7h1V5.73c-.6-.34-1-.99-1-1.73a2 2 0 0 1 2-2z"/><path d="M9 14h.01"/><path d="M15 14h.01"/></svg>
+                 </div>
+                 <div className="max-w-[76%] rounded-[1.25rem] rounded-bl-sm px-4 py-3 cyber-bubble-ai text-gray-300 text-[14.5px] items-center gap-2 flex shadow-sm">
                    <div className="typing-dots mt-[1px]"><span></span><span></span><span></span></div>
                  </div>
                </div>
@@ -227,23 +238,21 @@ ${text}`;
           </div>
 
           {/* Input Area */}
-          <div className="p-3 bg-white/95 backdrop-blur-sm border-t border-gray-100 flex items-center gap-2">
+          <div className="p-4 border-t border-white/5 flex items-center gap-3">
             <input 
               type="text" 
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
               onKeyDown={handleKeyDown}
-              placeholder="Nhập yêu cầu tư vấn..."
-              className="flex-1 px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-full focus:outline-none focus:border-[#2563eb] focus:ring-1 focus:ring-[#2563eb] text-sm text-gray-900 placeholder-gray-500 transition-all"
+              placeholder="Hỏi tôi bất cứ điều gì..."
+              className="flex-1 px-5 py-3.5 bg-white/5 border border-white/10 rounded-full focus:outline-none focus:border-white/30 focus:bg-white/10 text-[14.5px] tracking-wide text-white placeholder-gray-400/80 transition-all"
             />
             <button 
               onClick={handleSend}
               disabled={isTyping || !inputText.trim()}
-              className="w-10 h-10 rounded-full flex items-center justify-center bg-[#2563eb] text-white hover:bg-[#1d4ed8] disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-sm"
+              className="w-[48px] h-[48px] rounded-full flex shrink-0 items-center justify-center bg-transparent border border-white/20 text-gray-300 hover:text-white hover:bg-white/10 hover:border-white/40 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
             >
-              <svg className="w-5 h-5 ml-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-              </svg>
+              <svg className="w-[22px] h-[22px] ml-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" /></svg>
             </button>
           </div>
 

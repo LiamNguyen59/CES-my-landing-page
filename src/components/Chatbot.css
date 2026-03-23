@@ -1,3 +1,8 @@
+/* Markdown Text Colors for Dark Theme */
+.chat-markdown {
+  color: #f8fafc; /* Tailwind slate-50 */
+}
+
 .chat-markdown p {
   line-height: 1.6;
   margin-bottom: 0.5rem;
@@ -21,12 +26,12 @@
 
 .chat-markdown strong {
   font-weight: 600;
-  color: #2563eb; /* Tailwind blue-600 */
+  color: #60a5fa; /* Tailwind blue-400 for better contrast on dark */
 }
 
 .chat-markdown code {
-  background-color: #1e293b; /* Tailwind slate-800 */
-  color: #e2e8f0; /* Tailwind slate-200 */
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #f1f5f9;
   font-family: 'Fira Code', Consolas, monospace;
   padding: 0.125rem 0.25rem;
   border-radius: 0.25rem;
@@ -39,24 +44,25 @@
 }
 
 .chat-markdown pre {
-  background-color: #1e293b;
+  background-color: rgba(0, 0, 0, 0.3);
   color: #e2e8f0;
   padding: 0.75rem;
   border-radius: 0.5rem;
   overflow-x: auto;
   margin-bottom: 0.75rem;
+  border: 1px solid rgba(255,255,255,0.05);
 }
 
 .chat-markdown blockquote {
-  border-left: 4px solid #94a3b8; /* Tailwind slate-400 */
-  color: #64748b; /* Tailwind slate-500 */
+  border-left: 4px solid #475569;
+  color: #94a3b8;
   padding-left: 0.75rem;
   margin-bottom: 0.5rem;
   font-style: italic;
 }
 
 .chat-markdown a {
-  color: #3b82f6; /* Tailwind blue-500 */
+  color: #60a5fa;
   text-decoration: underline;
 }
 
@@ -83,17 +89,23 @@
   40% { transform: scale(1); }
 }
 
-/* Glassmorphism Classes */
-.chatbot-glass {
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 1);
+/* Dark Glassmorphism Classes */
+.cyber-glass {
+  background: rgba(15, 23, 42, 0.7); /* Deep dark blue */
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
 }
 
-.dark-chatbot-glass {
-  background: rgba(15, 23, 42, 0.85);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+.cyber-bubble-ai {
+  background: rgba(255, 255, 255, 0.08); /* Light translucent for contrast */
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.cyber-bubble-user {
+  background: #2563eb; /* Solid blue */
+  box-shadow: 0 4px 14px 0 rgba(37, 99, 235, 0.39);
 }
