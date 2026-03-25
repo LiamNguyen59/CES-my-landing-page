@@ -92,17 +92,17 @@ ${text}`;
         ...currentMessages.map(m => ({ role: m.role, content: m.content }))
       ];
 
-      // Gửi request tới OpenRouter
-      const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+      // Gửi request tới 9Router
+      const res = await fetch('https://9router.vuhai.io.vn/v1/chat/completions', {
         method: 'POST',
         headers: {
-          'Authorization': 'Bearer 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',
+          'Authorization': 'Bearer sk-4bd27113b7dc78d1-lh6jld-f4f9c69f',
           'Content-Type': 'application/json',
           'HTTP-Referer': window.location.href, // Yêu cầu bắt buộc của OpenRouter free
           'X-Title': 'Vanguard Wealth Landing Page' 
         },
         body: JSON.stringify({
-          model: 'z-ai/glm-4.5-air:free',
+          model: 'ces-chatbot-gpt-5.4',
           messages: payloadMessages,
         })
       });
