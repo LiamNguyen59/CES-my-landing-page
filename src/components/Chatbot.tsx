@@ -14,8 +14,8 @@ const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxVEXGrgGCLKp
 // Session ID duy nhất cho mỗi phiên tải trang
 const AI_CHAT_SESSION_ID = 'session_' + Date.now() + '_' + Math.random().toString(36).substring(2, 7);
 
-// Regex pattern bóc tách tag ẩn từ AI response
-const LEAD_DATA_PATTERN = /\|\|LEAD_DATA:\s*(\{.*?\})\s*\|\|/;
+// Regex pattern bóc tách tag ẩn từ AI response, hỗ trợ multi-line
+const LEAD_DATA_PATTERN = /\|\|LEAD_DATA:\s*(\{[\s\S]*?\})\s*\|\|/;
 
 type Message = {
   role: 'user' | 'assistant' | 'system';
