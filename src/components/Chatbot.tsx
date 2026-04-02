@@ -46,7 +46,7 @@ function processAIResponse(aiResponse: string, chatHistoryArray: Message[] = [])
         const leadData = JSON.parse(match[1]);
         console.log('✅ Dữ liệu khách hàng bóc được:', leadData);
 
-        if (leadData.name || leadData.phone || leadData.email) {
+        if (leadData.name || leadData.phone || leadData.email || leadData.interest || leadData.intent_level) {
           sendLeadToGoogleSheets(leadData, formattedHistory);
         }
       } catch (error) {
@@ -62,7 +62,7 @@ function processAIResponse(aiResponse: string, chatHistoryArray: Message[] = [])
  * Gửi dữ liệu Lead lên Google Apps Script → Google Sheets
  */
 async function sendLeadToGoogleSheets(
-  leadData: { name?: string; phone?: string; email?: string },
+  leadData: { name?: string; phone?: string; email?: string; interest?: string; intent_level?: string },
   chatHistoryText: string
 ) {
   if (!GOOGLE_SCRIPT_URL) {
@@ -78,6 +78,8 @@ async function sendLeadToGoogleSheets(
         name: leadData.name || '',
         phone: leadData.phone || '',
         email: leadData.email || '',
+        interest: leadData.interest || '',
+        intent_level: leadData.intent_level || '',
         source: window.location.href,
         sessionId: AI_CHAT_SESSION_ID,
         chatHistory: chatHistoryText,
@@ -123,9 +125,14 @@ Knowledge Base:
 ${text}
 
 Quy tắc BẮT BUỘC để hệ thống lưu dữ liệu:
-Mỗi khi khách hàng cung cấp (hoặc bạn nhận ra từ câu chat của họ) Tên, SĐT, hoặc Email, BẠN PHẢI tự động chèn ĐÚNG đoạn mã sau vào cuối cùng của câu trả lời:
-||LEAD_DATA: {"name": "...", "phone": "...", "email": "..."}||
-(Thay dấu ... bằng thông tin khách vừa cho. Thông tin nào chưa có thì để chuỗi rỗng "").
+Trong suốt quá trình trò chuyện, bạn phải PHÂN TÍCH nội dung khách hàng cung cấp (cả thông tin liên hệ và nhu cầu) để XUẤT RA kèm một đoạn mã JSON VÀO CUỐI CÙNG của câu trả lời, theo định dạng chính xác sau:
+||LEAD_DATA: {"name": "...", "phone": "...", "email": "...", "interest": "...", "intent_level": "..."}||
+
+Trong đó:
+- name, phone, email: Điền thông tin khách cung cấp. Nếu chưa có thì để trống "".
+- interest: Sản phẩm/dịch vụ/nhu cầu gửi lên mà khách đang quan tâm? (ví dụ: "Mua 5 bộ máy tính", "Đầu tư chứng khoán trung hạn"). Bạn tự suy luận từ nội dung chat, ghi ngắn gọn.
+- intent_level: Mức độ sẵn sàng hoặc chốt sale. Phân loại thành: "hot" (cần làm ngay, đưa thông tin ngay), "warm" (có quan tâm, cần tư vấn thêm), "cold" (mới hỏi dò, chưa rõ ràng). Bạn tự đánh giá dựa trên mức độ nhiệt tình của khách.
+
 LƯU Ý QUAN TRỌNG: Tuyệt đối không được giải thích hay nhắc gì về đoạn mã ||LEAD_DATA|| này với khách hàng, cứ âm thầm chèn vào cuối là được.`;
         setSystemPrompt(fullPrompt);
       })
