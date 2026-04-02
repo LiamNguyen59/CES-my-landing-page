@@ -4,10 +4,91 @@ import React, { useState, useEffect, useRef } from 'react';
 import { marked } from 'marked';
 import './Chatbot.css';
 
+// ============================================================
+// CẤU HÌNH LEAD CAPTURE → GOOGLE SHEETS
+// ============================================================
+
+// URL của Google Apps Script Web App (thay bằng URL thật sau khi deploy)
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxVEXGrgGCLKpXbIm74vFlK4-y-Wf9lYxxLl2QExviIlslVaVU763b2A1wrgA8066Yl8Q/exec';
+
+// Session ID duy nhất cho mỗi phiên tải trang
+const AI_CHAT_SESSION_ID = 'session_' + Date.now() + '_' + Math.random().toString(36).substring(2, 7);
+
+// Regex pattern bóc tách tag ẩn từ AI response
+const LEAD_DATA_PATTERN = /\|\|LEAD_DATA:\s*(\{.*?\})\s*\|\|/;
+
 type Message = {
   role: 'user' | 'assistant' | 'system';
   content: string;
 };
+
+/**
+ * Bóc tách dữ liệu lead từ câu trả lời AI.
+ * 1. Kiểm tra có tag ||LEAD_DATA:{...}|| không
+ * 2. Nếu có → Parse JSON → Gửi lên Google Sheets kèm lịch sử chat & Session ID
+ * 3. Xóa tag khỏi câu trả lời → Trả về text sạch cho khách
+ */
+function processAIResponse(aiResponse: string, chatHistoryArray: Message[] = []): string {
+  // Xây dựng text lịch sử chat dễ đọc trên Google Sheets
+  let formattedHistory = '';
+  if (chatHistoryArray.length > 0) {
+    formattedHistory = chatHistoryArray.map(msg => {
+      const role = msg.role === 'user' ? 'Khách' : 'AI';
+      const content = msg.content.replace(LEAD_DATA_PATTERN, '').trim();
+      return `${role}: ${content}`;
+    }).join('\n\n');
+  }
+
+  if (aiResponse.includes('||LEAD_DATA:')) {
+    const match = aiResponse.match(LEAD_DATA_PATTERN);
+    if (match && match[1]) {
+      try {
+        const leadData = JSON.parse(match[1]);
+        console.log('✅ Dữ liệu khách hàng bóc được:', leadData);
+
+        if (leadData.name || leadData.phone || leadData.email) {
+          sendLeadToGoogleSheets(leadData, formattedHistory);
+        }
+      } catch (error) {
+        console.error('❌ Lỗi parse JSON từ AI:', error);
+      }
+    }
+    aiResponse = aiResponse.replace(LEAD_DATA_PATTERN, '').trim();
+  }
+  return aiResponse;
+}
+
+/**
+ * Gửi dữ liệu Lead lên Google Apps Script → Google Sheets
+ */
+async function sendLeadToGoogleSheets(
+  leadData: { name?: string; phone?: string; email?: string },
+  chatHistoryText: string
+) {
+  if (!GOOGLE_SCRIPT_URL) {
+    console.warn('⚠️ GOOGLE_SCRIPT_URL chưa được cấu hình. Bỏ qua gửi lead.');
+    return;
+  }
+  try {
+    await fetch(GOOGLE_SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: leadData.name || '',
+        phone: leadData.phone || '',
+        email: leadData.email || '',
+        source: window.location.href,
+        sessionId: AI_CHAT_SESSION_ID,
+        chatHistory: chatHistoryText,
+        timestamp: new Date().toLocaleString('vi-VN')
+      })
+    });
+    console.log('📤 Đã đồng bộ dữ liệu vào Google Sheets!');
+  } catch (err) {
+    console.warn('⚠️ Không gửi được dữ liệu lead:', err);
+  }
+}
 
 export default function Chatbot() {
   const [mounted, setMounted] = useState(false);
@@ -36,7 +117,12 @@ Luôn: Chào thân thiện, Trả lời rõ ràng, Kết thúc bằng lời mờ
 Nếu ngoài phạm vi → từ chối nhẹ + hướng dẫn liên hệ.
 
 Knowledge Base:
-${text}`;
+${text}
+
+Quy tắc đặc biệt: Trong quá trình trò chuyện, nếu bạn phát hiện người dùng cung cấp Tên, Số điện thoại hoặc Email, bạn HÃY VỪA trả lời họ bình thường, VỪA chèn thêm một đoạn mã JSON vào cuối cùng của câu trả lời theo đúng định dạng sau:
+||LEAD_DATA: {"name": "...", "phone": "...", "email": "..."}||
+Nếu thông tin nào chưa có, hãy để null.
+TUYỆT ĐỐI KHÔNG giải thích hay đề cập đến đoạn mã này cho người dùng.`;
         setSystemPrompt(fullPrompt);
       })
       .catch(err => console.error("Error loading chatbot data:", err));
@@ -116,7 +202,10 @@ ${text}`;
       const data = await res.json();
       const aiResponse = data.choices[0].message.content;
 
-      setMessages([...currentMessages, { role: 'assistant', content: aiResponse }]);
+      // Bóc tách lead data + gửi Google Sheets trước khi hiển thị
+      const allMessages = [...currentMessages, { role: 'assistant', content: aiResponse }];
+      const cleanResponse = processAIResponse(aiResponse, allMessages);
+      setMessages([...currentMessages, { role: 'assistant', content: cleanResponse }]);
     } catch (error) {
       console.error("Chat API Error:", error);
       setMessages([...currentMessages, { 
